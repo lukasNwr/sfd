@@ -28,13 +28,13 @@ export default function Home() {
       </p>
 
       <Dialog>
-        <DialogTrigger className="flex gap-2">
-          <Button variant="outline">
+        <DialogTrigger asChild>
+          <Button variant="outline" className="flex gap-2">
             <span>How to use this?</span>
             <LucideCircleHelp />
           </Button>
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>How to use this?</DialogTitle>
             <DialogDescription>
@@ -49,13 +49,14 @@ export default function Home() {
               <p>Take a screenshot of the shifts from Smartplan</p>
               <Dialog>
                 <DialogTrigger asChild>
-                  <Image
-                    src="/shifts-image.png"
-                    alt="Image with shifts from smartplan"
-                    width={200}
-                    height={200}
-                    className="cursor-pointer hover:opacity-90 transition-opacity"
-                  />
+                  <div className="cursor-pointer hover:opacity-90 transition-opacity">
+                    <Image
+                      src="/shifts-image.png"
+                      alt="Image with shifts from smartplan"
+                      width={200}
+                      height={200}
+                    />
+                  </div>
                 </DialogTrigger>
                 <DialogContent className="max-w-4xl">
                   <DialogHeader>

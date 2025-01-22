@@ -71,20 +71,22 @@ export default function ShiftImageUploader() {
       console.error("Invalid input in processTextOutput");
       return "";
     }
-    // Adjusted regex to be more flexible
+    // Updated regex to handle all formats
     const pattern =
-      /([A-Za-z]+[,.]?\s+\d{1,2}(?:th|st|nd|rd)?\s+[A-Za-z]+\.?)\s*[®\s]*\s*([A-Za-z\s]+)?\s*(\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2})/gi;
+      /([A-Za-z]+)(?:,|\s+)?\s*(?:d\.)?\s*(\d{1,2})(?:th|st|nd|rd)?\s+([A-Za-z]+)\.?\s*(?:®\s*(?:[A-Za-z\s]+)\s+)?(\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2})(?:\s*[0-9.]+)?/gi;
     const csvOutput: string[] = [];
     let match: RegExpExecArray | null;
 
     while ((match = pattern.exec(text)) !== null) {
-      const date = match[1].replace(/,/g, ""); // Remove commas from the date
-      const timeRange = match[3];
+      const day = match[1];
+      const date = `${day} ${match[2]} ${match[3]}`; // Reconstruct the date
+      const timeRange = match[4];
       csvOutput.push(`${date},${timeRange}`);
     }
 
     if (csvOutput.length === 0) {
       console.warn("No matches found in processTextOutput. Input text:", text);
+      throw new Error("No valid shift data found in the text");
     }
 
     return csvOutput.join("\n");
