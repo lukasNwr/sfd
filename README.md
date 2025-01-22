@@ -6,3 +6,5 @@
 
 - It's mainly made with v0 and shadcn
 - uses OCR (Tesseract.js) for the image → text
+
+It's accessible on this url: https://shifts-covert.vercel.app/
