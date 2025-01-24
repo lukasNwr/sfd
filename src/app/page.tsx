@@ -12,9 +12,9 @@ export default function Home() {
             Shift Schedule Image Processor
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Upload an image of your shift schedule, and our OCR technology will
-            process it into a CSV format. You can then adjust the shift times,
-            remove days, and download the updated schedule.
+            Upload an image of your shift schedule, and this app will process it
+            into a CSV format. You can then adjust the shift times, remove days,
+            and download the updated schedule.
           </p>
         </div>
 
