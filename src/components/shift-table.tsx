@@ -11,8 +11,9 @@ import { TimeEditor } from "./time-editor";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { parse, differenceInMinutes } from "date-fns";
-import { Copy, Download } from "lucide-react";
+import { Copy, Download, Calendar, Save } from "lucide-react";
 import { Trash2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 interface ShiftTableProps {
   csvData: string;
@@ -134,7 +135,7 @@ export default function ShiftTable({ csvData, onSave }: ShiftTableProps) {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 rounded-md border w-full p-2">
       <Table>
         <TableHeader>
           <TableRow>
@@ -142,14 +143,19 @@ export default function ShiftTable({ csvData, onSave }: ShiftTableProps) {
             <TableHead>Date</TableHead>
             <TableHead>Start Time</TableHead>
             <TableHead>End Time</TableHead>
-            <TableHead className="w-[100px]">Actions</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {shifts.map((shift, index) => (
             <TableRow key={index}>
-              <TableCell>{shift.day}</TableCell>
-              <TableCell>{shift.date}</TableCell>
+              <TableCell className="font-medium">{shift.day}</TableCell>
+              <TableCell>
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                  {shift.date}
+                </div>
+              </TableCell>
               <TableCell>
                 <TimeEditor
                   time={shift.startTime}
@@ -166,12 +172,12 @@ export default function ShiftTable({ csvData, onSave }: ShiftTableProps) {
                   }
                 />
               </TableCell>
-              <TableCell>
+              <TableCell className="text-right">
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={() => handleRemoveDay(index)}
-                  className="h-8 w-8 hover:!text-red-500"
+                  className="h-8 w-8 text-destructive"
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
@@ -180,13 +186,20 @@ export default function ShiftTable({ csvData, onSave }: ShiftTableProps) {
           ))}
         </TableBody>
       </Table>
-      <div className="mt-4 p-4 border rounded-lg bg-gray-50">
-        <div className="flex justify-between items-center">
+
+      {/* <div className="flex justify-between items-center">
           <span className="font-medium">Total Working Hours:</span>
           <span className="font-semibold">{calculateTotalHours(shifts)}</span>
-        </div>
+        </div> */}
+
+      {/* Total Hours */}
+      <div className="flex justify-between items-center p-4 bg-muted rounded-lg">
+        <span className="font-semibold">Total Working Hours:</span>
+        <Badge variant="secondary" className="text-lg">
+          32h 30m
+        </Badge>
       </div>
-      <div className="mt-4 flex justify-center gap-4">
+      <div className="mt-4 flex justify-end gap-4">
         <Button
           variant="outline"
           onClick={handleCopyToClipboard}
@@ -203,7 +216,10 @@ export default function ShiftTable({ csvData, onSave }: ShiftTableProps) {
           <Download className="h-4 w-4" />
           Download TXT
         </Button>
-        <Button onClick={handleSave}>Save Changes</Button>
+        <Button onClick={handleSave}>
+          <Save className="mr-2 h-4 w-4" />
+          Save Changes
+        </Button>
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { createWorker } from "tesseract.js";
 import { useToast } from "@/hooks/use-toast";
 import Dropzone from "react-dropzone";
-import { LucideFileUp } from "lucide-react";
+import { LucideFileUp, FileText, Download } from "lucide-react";
 
 export default function ShiftImageUploader() {
   const [file, setFile] = useState<File | null>(null);
@@ -146,8 +146,8 @@ export default function ShiftImageUploader() {
   };
 
   return (
-    <div className="space-y-4 w-full flex flex-col justify-center items-center">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+    <div className="space-y-6 w-full flex flex-col justify-center items-center">
+      <form onSubmit={handleSubmit}>
         <Dropzone
           onDrop={(acceptedFiles) => {
             if (acceptedFiles && acceptedFiles.length > 0) {
@@ -169,36 +169,53 @@ export default function ShiftImageUploader() {
         >
           {({ getRootProps, getInputProps, isDragActive }) => (
             <section
-              className={`flex items-center justify-center bg-gray-50 h-24 w-[620px] min-w-[200px] border-gray-200 border-[1px] rounded-xl text-gray-400 ${isDragActive ? "border-blue-500 border-2" : ""}`}
+              className={`flex flex-col gap-4  p-6 items-center justify-center bg-gray-50 w-[620px] min-w-[200px] border-dashed border-2 rounded-lg text-muted-foreground text-center ${isDragActive ? "border-blue-500 border-2" : ""}`}
             >
               <div {...getRootProps()}>
                 <input {...getInputProps()} />
                 <div className="flex flex-col gap-2 items-center cursor-pointer">
-                  <LucideFileUp />
                   {file ? (
-                    <div className="flex flex-col items-center">
-                      <p className="text-green-600">File uploaded:</p>
-                      <p className="text-sm">{file.name}</p>
+                    <div className="flex gap-2">
+                      <FileText />
+                      <div className="flex gap-1 items-center">
+                        <p className="text-green-600">File uploaded:</p>
+                        <p> {file.name}</p>
+                      </div>
                     </div>
                   ) : (
-                    <p>
-                      {isDragActive
-                        ? "Drop the image here..."
-                        : "Drag and drop (or click) to upload image..."}
-                    </p>
+                    <div className="w-full flex flex-col items-center gap-2 justify-center">
+                      <LucideFileUp />
+                      <p>
+                        {isDragActive
+                          ? "Drop the image here..."
+                          : "Drag and drop (or click) to upload image..."}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex gap-2 justify-center">
+                <div className="flex gap-2 w-full justify-center">
+                  {file && (
+                    <Button type="submit" disabled={!file || isLoading}>
+                      {isLoading ? "Processing..." : "Process Shift Image"}
+                    </Button>
+                  )}
+                  {result && (
+                    <Button onClick={handleDownload} variant="outline">
+                      <Download className="mr-2 h-4 w-4" />
+                      Download CSV
+                    </Button>
                   )}
                 </div>
               </div>
             </section>
           )}
         </Dropzone>
-        <div className="flex gap-2 w-full justify-center">
-          <Button type="submit" disabled={!file || isLoading}>
-            {isLoading ? "Processing..." : "Process Shift Image"}
-          </Button>
-          {result && <Button onClick={handleDownload}>Download CSV</Button>}
-        </div>
       </form>
+
       {result && (
         <div className="mt-4 space-y-4">
           <div>
