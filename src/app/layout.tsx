@@ -25,9 +25,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex justify-center antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} flex justify-center antialiased relative overflow-clip`}
       >
-        <div className="flex min-h-screen max-w-3xl">{children}</div>
+        <div className="flex min-h-screen max-w-3xl ">{children}</div>
       </body>
     </html>
   );

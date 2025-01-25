@@ -1,14 +1,34 @@
 import ShiftImageUploader from "@/components/shift-image-uploader";
 
+import Image from "next/image";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { HowItWorks } from "@/components/how-it-works";
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-background">
-      <div className="w-full max-w-3xl space-y-8">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-background ">
+      <Image
+        src="/shifts-image.png"
+        alt="Landing page background image"
+        width={1000}
+        height={1000}
+        layout="responsive"
+        className="absolute z-0 opacity-50 "
+        style={{
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          transform:
+            "perspective(1000px) rotateY(-15deg) rotateX(5deg) scale(1.1)",
+          maskImage: "linear-gradient(to right, black 60%, transparent 100%)",
+          WebkitMaskImage:
+            "linear-gradient(to right, black 60%, transparent 100%)",
+          opacity: "0.08",
+        }}
+      />
+      <div className="w-full max-w-3xl space-y-8 z-10">
         <div className="space-y-4 text-center">
-          <h1 className="text-4xl font-bold tracking-tight">
+          <h1 className="text-6xl font-bold tracking-tight">
             Shift Schedule Image Processor
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -22,7 +42,7 @@ export default function Home() {
           <HowItWorks />
         </div>
 
-        <Card className="border-2">
+        <Card className="border-2 shadow-xl">
           <CardContent className="pt-6">
             <ShiftImageUploader />
           </CardContent>
