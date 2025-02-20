@@ -78,10 +78,18 @@ export default function ShiftTable({ csvData, onSave }: ShiftTableProps) {
 
   const calculateTotalHours = (shifts: Shift[]): string => {
     const totalMinutes = shifts.reduce((acc, shift) => {
-      const startTime = parse(shift.startTime, "HH:mm", new Date());
-      const endTime = parse(shift.endTime, "HH:mm", new Date());
-      const diff = differenceInMinutes(endTime, startTime);
-      return acc + (diff > 0 ? diff : diff + 24 * 60);
+      const [startHours, startMinutes] = shift.startTime.split(":").map(Number);
+      const [endHours, endMinutes] = shift.endTime.split(":").map(Number);
+
+      const startTotalMinutes = startHours * 60 + startMinutes;
+      let endTotalMinutes = endHours * 60 + endMinutes;
+
+      // If end time is earlier than start time, add 24 hours
+      if (endTotalMinutes <= startTotalMinutes) {
+        endTotalMinutes += 24 * 60;
+      }
+
+      return acc + (endTotalMinutes - startTotalMinutes);
     }, 0);
 
     const hours = Math.floor(totalMinutes / 60);
@@ -196,7 +204,7 @@ export default function ShiftTable({ csvData, onSave }: ShiftTableProps) {
       <div className="flex justify-between items-center p-4 bg-muted rounded-lg">
         <span className="font-semibold">Total Working Hours:</span>
         <Badge variant="secondary" className="text-lg">
-          32h 30m
+          {calculateTotalHours(shifts)}
         </Badge>
       </div>
       <div className="mt-4 flex justify-end gap-4">

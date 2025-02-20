@@ -8,13 +8,31 @@ interface TimeEditorProps {
 }
 
 export function TimeEditor({ time, onTimeChange }: TimeEditorProps) {
-  const [hours, minutes] = time.split(":").map(Number);
+  const handleIncrement = () => {
+    const [hours, minutes] = time.split(":").map(Number);
+    let newMinutes = minutes + 5;
+    let newHours = hours;
 
-  const adjustTime = (minutesToAdd: number) => {
-    const totalMinutes = hours * 60 + minutes + minutesToAdd;
-    const newHours = Math.floor(totalMinutes / 60) % 24;
-    const newMinutes = totalMinutes % 60;
-    const newTime = `${newHours.toString().padStart(2, "0")}:${newMinutes.toString().padStart(2, "0")}`;
+    if (newMinutes >= 60) {
+      newMinutes = newMinutes - 60;
+      newHours = (hours + 1) % 24;
+    }
+
+    const newTime = `${String(newHours).padStart(2, "0")}:${String(newMinutes).padStart(2, "0")}`;
+    onTimeChange(newTime);
+  };
+
+  const handleDecrement = () => {
+    const [hours, minutes] = time.split(":").map(Number);
+    let newMinutes = minutes - 5;
+    let newHours = hours;
+
+    if (newMinutes < 0) {
+      newMinutes = newMinutes + 60;
+      newHours = (hours - 1 + 24) % 24;
+    }
+
+    const newTime = `${String(newHours).padStart(2, "0")}:${String(newMinutes).padStart(2, "0")}`;
     onTimeChange(newTime);
   };
 
@@ -24,7 +42,7 @@ export function TimeEditor({ time, onTimeChange }: TimeEditorProps) {
         variant="outline"
         size="icon"
         className="h-7 w-7"
-        onClick={() => adjustTime(-5)}
+        onClick={handleDecrement}
       >
         <Minus className="h-3 w-3" />
       </Button>
@@ -36,7 +54,7 @@ export function TimeEditor({ time, onTimeChange }: TimeEditorProps) {
         variant="outline"
         size="icon"
         className="h-7 w-7"
-        onClick={() => adjustTime(6)}
+        onClick={handleIncrement}
       >
         <Plus className="h-3 w-3" />
       </Button>
