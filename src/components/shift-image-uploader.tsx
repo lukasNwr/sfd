@@ -71,9 +71,9 @@ export default function ShiftImageUploader() {
       console.error("Invalid input in processTextOutput");
       return "";
     }
-    // Updated regex to handle all formats
     const pattern =
-      /([A-Za-z]+)(?:,|\s+)?\s*(?:d\.)?\s*(\d{1,2})(?:th|st|nd|rd)?\s+([A-Za-z]+)\.?\s*(?:®\s*(?:[A-Za-z\s]+)\s+)?(\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2})(?:\s*[0-9.]+)?/gi;
+      /([A-Za-z]+),?\s*(\d{1,2})(?:th|st|nd|rd)?\s+([A-Za-z]+)\.?\s*(?:[®©]\s*[A-Za-z\s]*)?\s*(\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2})/gi;
+
     const csvOutput: string[] = [];
     let match: RegExpExecArray | null;
 
@@ -104,10 +104,16 @@ export default function ShiftImageUploader() {
         if (!extractedText) {
           throw new Error("No text extracted from the image");
         }
+
+        console.log("extractedTExt: ", extractedText);
+
         const processedText = processTextOutput(extractedText);
         if (!processedText) {
           throw new Error("Failed to process extracted text");
         }
+
+        console.log("processed data: ", processedText);
+
         const csvResult = parseShiftData(processedText);
         setResult(csvResult);
       } catch (error) {
