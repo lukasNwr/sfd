@@ -29,7 +29,7 @@ export default function Home() {
       <div className="w-full max-w-3xl space-y-8 z-10">
         <div className="space-y-4 text-center">
           <h1 className="text-6xl font-bold tracking-tight">
-            Shift Schedule Image Processor
+            Shi(f)ts for David
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Upload an image of your shift schedule, and this app will process it
