@@ -32,7 +32,24 @@ export default function ShiftImageUploader() {
     }
   }, []);
 
-  const parseShiftData = (text: string): string => {
+  const calculateHours = (startTime: string, endTime: string): string => {
+    const [startHours, startMinutes] = startTime.split(":").map(Number);
+    const [endHours, endMinutes] = endTime.split(":").map(Number);
+
+    const startTotalMinutes = startHours * 60 + startMinutes;
+    let endTotalMinutes = endHours * 60 + endMinutes;
+
+    if (endTotalMinutes <= startTotalMinutes) {
+      endTotalMinutes += 24 * 60;
+    }
+
+    const totalMinutes = endTotalMinutes - startTotalMinutes;
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    return `${hours}h ${minutes}m`;
+  };
+
+  const parseShiftData = useCallback((text: string): string => {
     try {
       if (!text || typeof text !== "string") {
         throw new Error("Invalid input: text is empty or not a string");
@@ -46,9 +63,11 @@ export default function ShiftImageUploader() {
             return null;
           }
           const [dateStr, timeStr] = parts;
+          const [startTime, endTime] = timeStr.split(" - ");
+          const hoursWorked = calculateHours(startTime, endTime);
           const [day, ...dateParts] = (dateStr || "").split(" ");
           const date = dateParts.join(" ");
-          return `${day || "Unknown"},${date || "Unknown"},${timeStr || "OFF"}`;
+          return `${day || "Unknown"},${date || "Unknown"},${timeStr || "OFF"},${hoursWorked}`;
         })
         .filter(Boolean);
 
@@ -56,7 +75,7 @@ export default function ShiftImageUploader() {
         throw new Error("No valid shift data found");
       }
 
-      return ["Day,Date,Attendance", ...csvLines].join("\n");
+      return ["Day,Date,Attendance,Hours Worked", ...csvLines].join("\n");
     } catch (error) {
       console.error("Error in parseShiftData:", error);
       throw new Error(
@@ -64,7 +83,7 @@ export default function ShiftImageUploader() {
           (error instanceof Error ? error.message : "Unknown error"),
       );
     }
-  };
+  }, []);
 
   const processTextOutput = (text: string): string => {
     if (!text || typeof text !== "string") {
@@ -130,7 +149,7 @@ export default function ShiftImageUploader() {
         setIsLoading(false);
       }
     },
-    [file, processImage, toast],
+    [file, processImage, parseShiftData, toast],
   );
 
   const handleSave = (updatedCsv: string) => {
