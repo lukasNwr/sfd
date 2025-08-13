@@ -1,10 +1,21 @@
-# Shifts Hours Calculator
+# Shift Hours Calculator
 
-> This is simple web application for calculating shifts for my work. I have to send the total hours and shifts to my boss every week in message and it's just annoying to do this calculation. Previously I have create python script that would convert and count everything for me from csv file. I have used ChatGPT to get the info from screenshot and then convert it to csv file. But then I just wanted to try the v0 and make something with it.
+A simple web application to help you and your colleagues easily report shifts and hours to your boss.
 
-## More info
+## About
 
-- It's mainly made with v0 and shadcn
-- uses OCR (Tesseract.js) for the image → text
+This project was created to simplify the process of reporting weekly shift data. It eliminates the need for manual calculations and conversions, which can be tedious and prone to errors. The application takes an image of your shift schedule as input, extracts the relevant information using OCR, and presents it in a clear and organized format.
 
-It's accessible on this url: <https://shifts-covert.vercel.app/>
+## Features
+
+*   **Image-to-Text Conversion:** Uses Tesseract.js to perform OCR on shift schedule images.
+*   **Automated Calculations:** Automatically calculates total hours and shifts.
+*   **User-Friendly Interface:** Built with v0 and shadcn for a clean and intuitive user experience.
+
+## Usage
+
+1.  **Upload Image:** Upload a screenshot or photo of your shift schedule.
+2.  **Review Data:** The application will extract the shift data and display it in a table.
+3.  **Copy Results:** Copy the total hours and shifts to send to your boss.
+
+The application is accessible at: <https://shifts-covert.vercel.app/>
