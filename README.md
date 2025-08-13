@@ -1,6 +1,6 @@
 # Shift Hours Calculator
 
-A simple web application to help you and your colleagues easily report shifts and hours to your boss.
+A simple web application to help me and my colleagues easily report shifts and hours to your boss.
 
 ## About
 
